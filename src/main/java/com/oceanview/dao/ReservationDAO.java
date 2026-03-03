@@ -124,9 +124,22 @@ public class ReservationDAO {
         return null;
     }
     
-    // Search reservations by keyword with bill information
+    // Search reservations by keyword with improved handling for reservation numbers
     public List<Reservation> searchReservations(String keyword) {
         List<Reservation> reservations = new ArrayList<>();
+        
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllReservations();
+        }
+        
+        // Clean the keyword - remove # if present for reservation number searches
+        String cleanKeyword = keyword.trim().replace("#", "");
+        String searchPattern = "%" + keyword.trim() + "%";
+        String cleanPattern = "%" + cleanKeyword + "%";
+        
+        System.out.println("🔍 Searching for: '" + keyword + "'");
+        System.out.println("Clean keyword: '" + cleanKeyword + "'");
+        
         String sql = "SELECT r.*, g.guest_name, g.contact_number, rt.type_name, rt.price_per_night, " +
                     "b.bill_id, b.total_nights as bill_nights, b.total_amount as bill_amount, " +
                     "b.generated_date as bill_date " +
@@ -137,17 +150,18 @@ public class ReservationDAO {
                     "WHERE LOWER(g.guest_name) LIKE LOWER(?) " +
                     "OR g.contact_number LIKE ? " +
                     "OR r.reservation_number LIKE ? " +
+                    "OR r.reservation_number LIKE ? " +  // Search without # symbol
                     "OR r.status LIKE ? " +
                     "ORDER BY r.check_in_date DESC";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            String searchPattern = "%" + keyword + "%";
             pstmt.setString(1, searchPattern);
             pstmt.setString(2, searchPattern);
             pstmt.setString(3, searchPattern);
-            pstmt.setString(4, searchPattern);
+            pstmt.setString(4, cleanPattern);  // Search reservation number without #
+            pstmt.setString(5, searchPattern);
             
             ResultSet rs = pstmt.executeQuery();
             
@@ -156,7 +170,10 @@ public class ReservationDAO {
                 reservations.add(res);
             }
             
+            System.out.println("✅ Found " + reservations.size() + " results");
+            
         } catch (SQLException e) {
+            System.out.println("❌ Search error: " + e.getMessage());
             e.printStackTrace();
         }
         
@@ -197,6 +214,15 @@ public class ReservationDAO {
     // Search by term AND status with bill information
     public List<Reservation> searchByTermAndStatus(String keyword, String status) {
         List<Reservation> reservations = new ArrayList<>();
+        
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getReservationsByStatus(status);
+        }
+        
+        String cleanKeyword = keyword.trim().replace("#", "");
+        String searchPattern = "%" + keyword.trim() + "%";
+        String cleanPattern = "%" + cleanKeyword + "%";
+        
         String sql = "SELECT r.*, g.guest_name, g.contact_number, rt.type_name, rt.price_per_night, " +
                     "b.bill_id, b.total_nights as bill_nights, b.total_amount as bill_amount, " +
                     "b.generated_date as bill_date " +
@@ -206,18 +232,19 @@ public class ReservationDAO {
                     "LEFT JOIN bill b ON r.reservation_id = b.reservation_id " +
                     "WHERE (LOWER(g.guest_name) LIKE LOWER(?) " +
                     "OR g.contact_number LIKE ? " +
-                    "OR r.reservation_number LIKE ?) " +
+                    "OR r.reservation_number LIKE ? " +
+                    "OR r.reservation_number LIKE ?) " +  // Search without #
                     "AND r.status = ? " +
                     "ORDER BY r.check_in_date DESC";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            String searchPattern = "%" + keyword + "%";
             pstmt.setString(1, searchPattern);
             pstmt.setString(2, searchPattern);
             pstmt.setString(3, searchPattern);
-            pstmt.setString(4, status);
+            pstmt.setString(4, cleanPattern);  // Search reservation number without #
+            pstmt.setString(5, status);
             
             ResultSet rs = pstmt.executeQuery();
             
@@ -317,7 +344,7 @@ public class ReservationDAO {
         }
     }
     
-    // FIXED: Helper method to map ResultSet to Reservation object with bill information
+    // Helper method to map ResultSet to Reservation object with bill information
     private Reservation mapResultSetToReservationWithBill(ResultSet rs) throws SQLException {
         Reservation res = new Reservation();
         
@@ -339,7 +366,7 @@ public class ReservationDAO {
         
         res.setStatus(rs.getString("status"));
         
-        // Bill fields - FIXED: Actually set the values in the model
+        // Bill fields
         try {
             int billId = rs.getInt("bill_id");
             if (!rs.wasNull()) {

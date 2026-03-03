@@ -27,7 +27,7 @@ public class GuestServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("adminId") == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
             return;
         }
         
@@ -52,7 +52,7 @@ public class GuestServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("adminId") == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
             return;
         }
         
@@ -142,6 +142,8 @@ public class GuestServlet extends HttpServlet {
         String searchTerm = request.getParameter("searchTerm");
         String searchType = request.getParameter("searchType");
         
+        System.out.println("🔍 Guest search - Term: '" + searchTerm + "', Type: '" + searchType + "'");
+        
         List<Guest> guests;
         
         if ("name".equals(searchType)) {
@@ -155,6 +157,7 @@ public class GuestServlet extends HttpServlet {
         request.setAttribute("guests", guests);
         request.setAttribute("searchTerm", searchTerm);
         request.setAttribute("searchType", searchType);
+        
         request.getRequestDispatcher("/jsp/listGuests.jsp").forward(request, response);
     }
     

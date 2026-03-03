@@ -20,9 +20,11 @@ public class GuestDAO {
             pstmt.setString(3, guest.getContactNumber());
             
             int result = pstmt.executeUpdate();
+            System.out.println("✅ Guest added: " + guest.getGuestName() + " - " + guest.getContactNumber());
             return result > 0;
             
         } catch (SQLException e) {
+            System.out.println("❌ Error adding guest: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -45,6 +47,7 @@ public class GuestDAO {
                 guest.setContactNumber(rs.getString("contact_number"));
                 guests.add(guest);
             }
+            System.out.println("📋 Retrieved " + guests.size() + " guests");
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +64,11 @@ public class GuestDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, "%" + name + "%");
+            String searchPattern = "%" + name + "%";
+            pstmt.setString(1, searchPattern);
+            
+            System.out.println("🔍 Searching guests by name: '" + name + "' with pattern: " + searchPattern);
+            
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
@@ -72,6 +79,8 @@ public class GuestDAO {
                 guest.setContactNumber(rs.getString("contact_number"));
                 guests.add(guest);
             }
+            
+            System.out.println("✅ Found " + guests.size() + " guests by name");
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,15 +89,33 @@ public class GuestDAO {
         return guests;
     }
     
-    // Search guests by contact
+    // FIXED: Search guests by contact with better handling
     public List<Guest> searchByContact(String contact) {
         List<Guest> guests = new ArrayList<>();
-        String sql = "SELECT * FROM guest WHERE contact_number LIKE ? ORDER BY guest_name";
+        
+        if (contact == null || contact.trim().isEmpty()) {
+            System.out.println("⚠️ Empty contact search term");
+            return getAllGuests();
+        }
+        
+        // Remove any non-digit characters for better matching
+        String cleanContact = contact.trim().replaceAll("[^0-9]", "");
+        
+        String sql = "SELECT * FROM guest WHERE contact_number LIKE ? OR REPLACE(contact_number, '-', '') LIKE ? ORDER BY guest_name";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, "%" + contact + "%");
+            String searchPattern = "%" + contact.trim() + "%";
+            String cleanPattern = "%" + cleanContact + "%";
+            
+            pstmt.setString(1, searchPattern);
+            pstmt.setString(2, cleanPattern);
+            
+            System.out.println("🔍 Searching guests by contact:");
+            System.out.println("   Original: '" + contact + "' → pattern: " + searchPattern);
+            System.out.println("   Clean: '" + cleanContact + "' → pattern: " + cleanPattern);
+            
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
@@ -98,9 +125,14 @@ public class GuestDAO {
                 guest.setAddress(rs.getString("address"));
                 guest.setContactNumber(rs.getString("contact_number"));
                 guests.add(guest);
+                
+                System.out.println("   Found: " + guest.getGuestName() + " - " + guest.getContactNumber());
             }
             
+            System.out.println("✅ Found " + guests.size() + " guests by contact");
+            
         } catch (SQLException e) {
+            System.out.println("❌ Error searching by contact: " + e.getMessage());
             e.printStackTrace();
         }
         
@@ -146,9 +178,11 @@ public class GuestDAO {
             pstmt.setInt(4, guest.getGuestId());
             
             int result = pstmt.executeUpdate();
+            System.out.println("✅ Guest updated: " + guest.getGuestName());
             return result > 0;
             
         } catch (SQLException e) {
+            System.out.println("❌ Error updating guest: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -166,18 +200,20 @@ public class GuestDAO {
             checkStmt.setInt(1, id);
             ResultSet rs = checkStmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-                // Guest has reservations - cannot delete
-                return false;
+                System.out.println("❌ Cannot delete guest ID " + id + " - has existing reservations");
+                return false; // Guest has reservations - cannot delete
             }
             
             // No reservations - safe to delete
             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
                 deleteStmt.setInt(1, id);
                 int result = deleteStmt.executeUpdate();
+                System.out.println("✅ Guest deleted ID: " + id);
                 return result > 0;
             }
             
         } catch (SQLException e) {
+            System.out.println("❌ Error deleting guest: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -194,7 +230,9 @@ public class GuestDAO {
             ResultSet rs = pstmt.executeQuery();
             
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                boolean exists = rs.getInt(1) > 0;
+                System.out.println("🔍 Contact " + contact + " exists: " + exists);
+                return exists;
             }
             
         } catch (SQLException e) {
@@ -216,7 +254,9 @@ public class GuestDAO {
             ResultSet rs = pstmt.executeQuery();
             
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                boolean exists = rs.getInt(1) > 0;
+                System.out.println("🔍 Contact " + contact + " exists (excluding ID " + excludeId + "): " + exists);
+                return exists;
             }
             
         } catch (SQLException e) {

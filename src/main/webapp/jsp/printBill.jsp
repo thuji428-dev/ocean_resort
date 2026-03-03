@@ -199,7 +199,7 @@
             <h3>Galle, Sri Lanka</h3>
             <p>123 Beach Road, Galle | Tel: +94 77 123 4567 | Email: info@oceanview.lk</p>
             <hr>
-            <h2>TAX INVOICE / BILL</h2>
+            <h2>TAX INVOICE</h2>
         </div>
         
         <div class="bill-info">
@@ -238,34 +238,18 @@
             <div class="detail-row">
                 <span>
                     Room Charges (<%= r.getRoomTypeName() %>)<br>
-                    <small><%= r.getCheckInDate().format(dateFormatter) %> to <%= r.getCheckOutDate().format(dateFormatter) %></small>
+                    <small><%= r.getCheckInDate().format(dateFormatter) %> to 
+                    <% if (r.getActualCheckoutDate() != null) { %>
+                        <%= r.getActualCheckoutDate().format(dateFormatter) %>
+                        <% if (!r.getActualCheckoutDate().equals(r.getCheckOutDate())) { %>
+                            <span style="color: #e67e22;">(Early Checkout)</span>
+                        <% } %>
+                    <% } else { %>
+                        <%= r.getCheckOutDate().format(dateFormatter) %>
+                    <% } %>
+                    </small>
                 </span>
-                <span>LKR <%= String.format("%,.0f", r.getPricePerNight()) %> x <%= r.getActualNights() %> nights</span>
-            </div>
-            
-            <% if (r.getActualCheckoutDate() != null && !r.getActualCheckoutDate().equals(r.getCheckOutDate())) { %>
-            <div class="detail-row" style="color: #e67e22;">
-                <span>
-                    Early Checkout Adjustment<br>
-                    <small>Actual checkout: <%= r.getActualCheckoutDate().format(dateFormatter) %></small>
-                </span>
-                <span>Adjusted</span>
-            </div>
-            <% } %>
-            
-            <div class="detail-row" style="font-weight: bold;">
-                <span>Sub Total</span>
-                <span>LKR <%= String.format("%,.0f", r.getActualAmount()) %></span>
-            </div>
-            
-            <div class="detail-row">
-                <span>Service Charge (10%)</span>
-                <span>LKR <%= String.format("%,.0f", r.getActualAmount() * 0.1) %></span>
-            </div>
-            
-            <div class="detail-row">
-                <span>Tax (12%)</span>
-                <span>LKR <%= String.format("%,.0f", r.getActualAmount() * 0.12) %></span>
+                <span><%= r.getActualNights() %> × LKR <%= String.format("%,.0f", r.getPricePerNight()) %></span>
             </div>
             
             <div class="total-row">

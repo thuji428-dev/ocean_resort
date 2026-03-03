@@ -302,86 +302,153 @@
             gap: 10px;
         }
         
-        .screenshot-placeholder {
+        .feature-box {
             background: #f8f9fa;
-            border: 2px dashed #2a5298;
-            border-radius: 10px;
-            padding: 40px;
-            text-align: center;
+            border-left: 4px solid #2a5298;
+            padding: 20px;
+            border-radius: 8px;
             margin: 20px 0;
-            position: relative;
         }
         
-        .screenshot-placeholder i {
-            font-size: 50px;
+        .feature-box h4 {
             color: #2a5298;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .screenshot-placeholder p {
-            color: #7f8c8d;
-            margin-bottom: 15px;
-        }
-        
-        .mock-screen {
-            background: white;
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 100%;
-            overflow-x: auto;
+            background: white;
         }
         
-        .mock-table {
+        .feature-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .image-caption {
+            margin-top: 10px;
+            color: #7f8c8d;
+            font-size: 13px;
+            font-style: italic;
+        }
+        
+        .status-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            margin: 20px 0;
         }
         
-        .mock-table th {
+        .status-table th {
             background: #f8fafd;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
+            color: #1e3c72;
         }
         
-        .mock-table td {
-            padding: 8px;
+        .status-table td {
+            padding: 12px;
             border-bottom: 1px solid #ecf0f1;
         }
         
-        .mock-button {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            margin: 2px;
-        }
-        
-        .btn-edit-mock {
-            background: #f39c12;
-            color: white;
-        }
-        
-        .btn-delete-mock {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-bill-mock {
-            background: #27ae60;
-            color: white;
-        }
-        
-        .status-mock {
-            padding: 3px 6px;
-            border-radius: 12px;
-            font-size: 10px;
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
         }
         
-        .status-BOOKED-mock {
+        .status-booked {
             background: #e3f2fd;
             color: #1976d2;
+        }
+        
+        .status-checkedin {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .status-checkedout {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .feature-item i {
+            font-size: 30px;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2a5298;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .print-btn:hover {
+            background: #1e3c72;
+            transform: scale(1.1);
         }
         
         .faq-section {
@@ -412,83 +479,12 @@
             display: block;
         }
         
-        .video-placeholder {
-            background: #1e3c72;
-            color: white;
-            padding: 60px;
-            text-align: center;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .video-placeholder i {
-            font-size: 60px;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        
         .quick-tips {
             background: #e8f5e9;
             border-left: 4px solid #388e3c;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-        }
-        
-        .quick-tips h4 {
-            color: #388e3c;
-            margin-bottom: 10px;
-        }
-        
-        .quick-tips ul {
-            list-style: none;
-        }
-        
-        .quick-tips li {
-            padding: 5px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .quick-tips i {
-            color: #388e3c;
-        }
-        
-        .print-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #2a5298;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-            z-index: 100;
-        }
-        
-        .print-btn:hover {
-            background: #1e3c72;
-            transform: scale(1.1);
-        }
-        
-        @media print {
-            .sidebar, .print-btn, .search-box, .help-grid {
-                display: none;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-            .detailed-section {
-                break-inside: avoid;
-            }
         }
         
         @media (max-width: 768px) {
@@ -507,6 +503,10 @@
             }
             
             .help-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -549,12 +549,7 @@
                     <span>View Reservations</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="${pageContext.request.contextPath}/bill?action=list" class="nav-link">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span>Bills</span>
-                </a>
-            </li>
+          
             <li class="nav-item">
                 <a href="${pageContext.request.contextPath}/guest" class="nav-link">
                     <i class="fas fa-users"></i>
@@ -585,12 +580,46 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="help-header">
-            <h1><i class="fas fa-life-ring"></i> Help & Support Guide</h1>
-            <p>Learn how to use the Ocean View Resort Management System effectively</p>
+            <h1><i class="fas fa-life-ring"></i> Complete System Guide</h1>
+            <p>Everything you need to know about the Ocean View Resort Management System</p>
             
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="helpSearch" placeholder="Search help topics...">
+            </div>
+        </div>
+        
+        <!-- Quick Feature Overview -->
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="fas fa-bolt"></i>
+                <h4>One-Click Checkout</h4>
+                <p>Click Bill button - auto-sets checkout date</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-search"></i>
+                <h4>Smart Search</h4>
+                <p>Search by name, phone, or reservation #</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-filter"></i>
+                <h4>Status Filters</h4>
+                <p>Filter by BOOKED/CHECKED-IN/CHECKED-OUT</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-calendar-check"></i>
+                <h4>Auto Status</h4>
+                <p>Status updates based on dates</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-file-invoice"></i>
+                <h4>Bill Printing</h4>
+                <p>Professional invoice format</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-users"></i>
+                <h4>Guest Management</h4>
+                <p>Unique contact numbers</p>
             </div>
         </div>
         
@@ -599,97 +628,74 @@
             <div class="help-card" data-topic="dashboard">
                 <div class="card-header">
                     <i class="fas fa-home"></i>
-                    <h3>Dashboard Overview</h3>
+                    <h3>Dashboard</h3>
                 </div>
                 <div class="card-content">
                     <ul class="step-list">
-                        <li><span class="step-number">1</span> View key statistics</li>
-                        <li><span class="step-number">2</span> Monitor room occupancy</li>
-                        <li><span class="step-number">3</span> Check today's revenue</li>
-                        <li><span class="step-number">4</span> Access quick actions</li>
+                        <li><span class="step-number">1</span> Real-time statistics</li>
+                        <li><span class="step-number">2</span> Click stats to filter</li>
+                        <li><span class="step-number">3</span> Quick actions</li>
                     </ul>
-                    <div style="margin-top: 15px;">
-                        <span class="tag">Quick Stats</span>
-                        <span class="tag">Analytics</span>
-                    </div>
                 </div>
             </div>
             
-            <div class="help-card" data-topic="reservation">
+            <div class="help-card" data-topic="reservation-add">
                 <div class="card-header">
-                    <i class="fas fa-calendar-plus"></i>
+                    <i class="fas fa-plus-circle"></i>
                     <h3>Add Reservation</h3>
                 </div>
                 <div class="card-content">
                     <ul class="step-list">
-                        <li><span class="step-number">1</span> Select guest from list</li>
+                        <li><span class="step-number">1</span> Select guest</li>
                         <li><span class="step-number">2</span> Choose room type</li>
-                        <li><span class="step-number">3</span> Pick check-in/out dates</li>
-                        <li><span class="step-number">4</span> System auto-calculates total</li>
+                        <li><span class="step-number">3</span> Pick dates</li>
+                        <li><span class="step-number">4</span> Auto-calculates total</li>
                     </ul>
-                    <div style="margin-top: 15px;">
-                        <span class="tag">New Booking</span>
-                        <span class="tag">Auto Status</span>
-                    </div>
                 </div>
             </div>
             
-            <div class="help-card" data-topic="manage">
+            <div class="help-card" data-topic="reservation-list">
                 <div class="card-header">
                     <i class="fas fa-list"></i>
                     <h3>Manage Reservations</h3>
                 </div>
                 <div class="card-content">
                     <ul class="step-list">
-                        <li><span class="step-number">1</span> Search by guest/phone</li>
-                        <li><span class="step-number">2</span> Filter by status</li>
-                        <li><span class="step-number">3</span> Edit or delete bookings</li>
-                        <li><span class="step-number">4</span> Generate bills</li>
+                        <li><span class="step-number">1</span> Search/filter</li>
+                        <li><span class="step-number">2</span> Edit by status rules</li>
+                        <li><span class="step-number">3</span> Delete (BOOKED only)</li>
+                        <li><span class="step-number">4</span> One-click checkout</li>
                     </ul>
-                    <div style="margin-top: 15px;">
-                        <span class="tag">Search</span>
-                        <span class="tag">Filter</span>
-                        <span class="tag">Edit</span>
-                    </div>
                 </div>
             </div>
             
             <div class="help-card" data-topic="billing">
                 <div class="card-header">
                     <i class="fas fa-file-invoice-dollar"></i>
-                    <h3>Billing</h3>
+                    <h3>Billing System</h3>
                 </div>
                 <div class="card-content">
                     <ul class="step-list">
-                        <li><span class="step-number">1</span> Auto-calculate bill amount</li>
-                        <li><span class="step-number">2</span> Print professional invoice</li>
-                        <li><span class="step-number">3</span> Early checkout adjustments</li>
-                        <li><span class="step-number">4</span> View bill history</li>
+                        <li><span class="step-number">1</span> Click Bill button</li>
+                        <li><span class="step-number">2</span> Confirm checkout</li>
+                        <li><span class="step-number">3</span> Auto-sets today</li>
+                        <li><span class="step-number">4</span> Print invoice</li>
                     </ul>
-                    <div style="margin-top: 15px;">
-                        <span class="tag">Print</span>
-                        <span class="tag">PDF</span>
-                        <span class="tag">Tax</span>
-                    </div>
                 </div>
             </div>
             
             <div class="help-card" data-topic="guest">
                 <div class="card-header">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-user-plus"></i>
                     <h3>Guest Management</h3>
                 </div>
                 <div class="card-content">
                     <ul class="step-list">
-                        <li><span class="step-number">1</span> Add new guests</li>
-                        <li><span class="step-number">2</span> Edit guest details</li>
+                        <li><span class="step-number">1</span> Add new guest</li>
+                        <li><span class="step-number">2</span> Edit details</li>
                         <li><span class="step-number">3</span> Search by name/phone</li>
-                        <li><span class="step-number">4</span> View guest history</li>
+                        <li><span class="step-number">4</span> Delete (no bookings)</li>
                     </ul>
-                    <div style="margin-top: 15px;">
-                        <span class="tag">Contact</span>
-                        <span class="tag">Address</span>
-                    </div>
                 </div>
             </div>
             
@@ -700,102 +706,337 @@
                 </div>
                 <div class="card-content">
                     <ul class="step-list">
-                        <li><span class="step-number">1</span> Add room categories</li>
-                        <li><span class="step-number">2</span> Set price per night</li>
-                        <li><span class="step-number">3</span> Edit/delete room types</li>
-                        <li><span class="step-number">4</span> View all room types</li>
+                        <li><span class="step-number">1</span> Add room category</li>
+                        <li><span class="step-number">2</span> Set price</li>
+                        <li><span class="step-number">3</span> Search by price range</li>
+                        <li><span class="step-number">4</span> Edit/delete</li>
                     </ul>
-                    <div style="margin-top: 15px;">
-                        <span class="tag">Pricing</span>
-                        <span class="tag">Categories</span>
-                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Detailed Section (Changes based on selection) -->
+        <!-- Detailed Documentation -->
         <div class="detailed-section" id="detailedSection">
-            <h2 id="detailTitle"><i class="fas fa-home"></i> Dashboard Overview</h2>
+            <h2><i class="fas fa-book"></i> Complete System Documentation</h2>
             
-            <!-- Screenshot Placeholder -->
-            <div class="screenshot-placeholder" id="screenshotPlaceholder">
-                <i class="fas fa-camera"></i>
-                <p>Screenshot of Dashboard will be displayed here</p>
-                <div class="mock-screen">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                        <div><strong>Dashboard</strong></div>
-                        <div>📅 March 03, 2026</div>
+            <!-- 1. User Authentication -->
+            <div class="feature-box">
+                <h4><i class="fas fa-lock"></i> 1. User Authentication</h4>
+                
+                <!-- Image for Login Page -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/login-screen.png" 
+                         alt="Login Screen" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place login-screen.png here
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                            <div style="color: #666;">Total Rooms</div>
-                            <div style="font-size: 24px; font-weight: bold;">8</div>
-                        </div>
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                            <div style="color: #666;">Active Bookings</div>
-                            <div style="font-size: 24px; font-weight: bold;">14</div>
-                        </div>
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                            <div style="color: #666;">Check-ins Today</div>
-                            <div style="font-size: 24px; font-weight: bold;">3</div>
-                        </div>
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                            <div style="color: #666;">Revenue</div>
-                            <div style="font-size: 24px; font-weight: bold;">LKR 25k</div>
-                        </div>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                        <div style="font-weight: bold; margin-bottom: 10px;">Recent Reservations</div>
-                        <table class="mock-table">
-                            <tr><th>#</th><th>Guest</th><th>Room</th><th>Status</th></tr>
-                            <tr><td>RES001</td><td>John Doe</td><td>Deluxe</td><td><span class="status-mock status-BOOKED-mock">BOOKED</span></td></tr>
-                            <tr><td>RES002</td><td>Jane Smith</td><td>Suite</td><td><span class="status-mock status-CHECKED-IN-mock">CHECKED-IN</span></td></tr>
-                        </table>
-                    </div>
+                    <div class="image-caption">Figure 1: Admin Login Screen</div>
                 </div>
+                
+                <ul style="margin-left: 20px;">
+                    <li>Single admin account with secure password hashing (SHA-256)</li>
+                    <li>Session timeout: 30 minutes of inactivity</li>
+                    <li>Demo credentials: username: <strong>admin</strong>, password: <strong>admin123</strong></li>
+                    <li>Click "Forgot Password?" to view credentials</li>
+                </ul>
             </div>
             
-            <!-- Step-by-step instructions -->
-            <div id="instructions">
-                <h3 style="color: #1e3c72; margin: 20px 0 10px;">📋 Step-by-Step Guide</h3>
-                <ol style="padding-left: 20px; line-height: 1.8;">
-                    <li><strong>Login:</strong> Use your admin credentials to access the system</li>
-                    <li><strong>Dashboard Overview:</strong> The dashboard shows key metrics:
-                        <ul style="margin-left: 20px; margin-top: 5px;">
-                            <li>Total rooms and their current status</li>
-                            <li>Active bookings count</li>
-                            <li>Today's check-ins and check-outs</li>
-                            <li>Revenue summary</li>
+            <!-- 2. Dashboard Overview -->
+            <div class="feature-box">
+                <h4><i class="fas fa-chart-line"></i> 2. Dashboard Overview</h4>
+                
+                <!-- Image for Dashboard -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/dashboard.png" 
+                         alt="Dashboard" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place dashboard.png here
+                    </div>
+                    <div class="image-caption">Figure 2: Main Dashboard</div>
+                </div>
+                
+                <ul style="margin-left: 20px;">
+                    <li><strong>Statistics Cards:</strong> Total Rooms, Active Bookings, Check-ins Today, Revenue</li>
+                    <li><strong>Click to Filter:</strong> Click on any stat card to filter reservations by that status</li>
+                    <li><strong>Recent Reservations:</strong> Shows latest 10 reservations</li>
+                    <li><strong>Quick Actions:</strong> Buttons for common tasks</li>
+                </ul>
+            </div>
+            
+            <!-- 3. Reservation Status Rules -->
+            <div class="feature-box">
+                <h4><i class="fas fa-tags"></i> 3. Reservation Status & Edit Rules</h4>
+                <table class="status-table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Can Edit</th>
+                            <th>Cannot Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="status-badge status-booked">BOOKED</span></td>
+                            <td>Future booking</td>
+                            <td>✓ Room Type<br>✓ Check-in Date<br>✓ Check-out Date</td>
+                            <td>✗ Guest Name</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge status-checkedin">CHECKED-IN</span></td>
+                            <td>Currently staying</td>
+                            <td>✓ Check-out Date</td>
+                            <td>✗ Guest<br>✗ Room Type<br>✗ Check-in Date</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge status-checkedout">CHECKED-OUT</span></td>
+                            <td>Already departed</td>
+                            <td>-</td>
+                            <td>✗ All fields (read-only)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><small>Note: Guest name is always fixed and cannot be changed for any status.</small></p>
+            </div>
+            
+            <!-- 4. Adding New Reservations -->
+            <div class="feature-box">
+                <h4><i class="fas fa-plus-circle"></i> 4. Adding New Reservations</h4>
+                
+                <!-- Image for Add Reservation Form -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/add-reservation.png" 
+                         alt="Add Reservation Form" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place add-reservation.png here
+                    </div>
+                    <div class="image-caption">Figure 3: Add Reservation Form</div>
+                </div>
+                
+                <ol style="margin-left: 20px;">
+                    <li>Click "Add Reservation" in sidebar</li>
+                    <li>Select guest from dropdown (or click "Add new guest" if not found)</li>
+                    <li>Choose room type (prices are pre-configured)</li>
+                    <li>Select check-in and check-out dates:
+                        <ul>
+                            <li>Check-in cannot be in the past</li>
+                            <li>Minimum 1 night stay required</li>
+                            <li>Check-out must be after check-in</li>
                         </ul>
                     </li>
-                    <li><strong>Quick Actions:</strong> Use the buttons below stats for common tasks</li>
-                    <li><strong>Navigation:</strong> Use sidebar to access different modules</li>
+                    <li>System auto-calculates total amount</li>
+                    <li>Status auto-assigned based on dates:
+                        <ul>
+                            <li>Future dates → <span class="status-badge status-booked">BOOKED</span></li>
+                            <li>Today's date → <span class="status-badge status-checkedin">CHECKED-IN</span></li>
+                        </ul>
+                    </li>
+                    <li>Click "Create Reservation" to save</li>
                 </ol>
             </div>
             
-            <!-- Quick Tips -->
-            <div class="quick-tips">
-                <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+            <!-- 5. Managing Reservations -->
+            <div class="feature-box">
+                <h4><i class="fas fa-tasks"></i> 5. Managing Reservations</h4>
+                
+                <!-- Image for Reservation List -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/reservation-list.png" 
+                         alt="Reservation List" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place reservation-list.png here
+                    </div>
+                    <div class="image-caption">Figure 4: Reservation List with Search & Filters</div>
+                </div>
+                
+                <h5 style="margin: 15px 0 10px;">🔍 Search & Filter</h5>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Search:</strong> By guest name, phone number, or reservation number</li>
+                    <li><strong>Note:</strong> Reservation numbers can be searched with or without the # symbol (e.g., both "#RES123" and "RES123" work)</li>
+                    <li><strong>Filter:</strong> By status (ALL/BOOKED/CHECKED-IN/CHECKED-OUT)</li>
+                    <li><strong>Click Stats:</strong> Click on stat cards to filter instantly</li>
+                </ul>
+                
+                <h5 style="margin: 15px 0 10px;">✏️ Editing Reservations</h5>
+                <ul style="margin-left: 20px;">
+                    <li>Click "Edit" button for any reservation</li>
+                    <li>Edit options depend on status (see table above)</li>
+                    <li><strong>For BOOKED:</strong> Can change room type, check-in, check-out</li>
+                    <li><strong>For CHECKED-IN:</strong> Can only change check-out date</li>
+                    <li><strong>For CHECKED-OUT:</strong> Cannot edit (read-only)</li>
+                    <li>Real-time price calculation updates as you change dates</li>
+                </ul>
+                
+                <h5 style="margin: 15px 0 10px;">🗑️ Deleting Reservations</h5>
+                <ul style="margin-left: 20px;">
+                    <li>Only <span class="status-badge status-booked">BOOKED</span> reservations can be deleted</li>
+                    <li>Delete button is disabled for CHECKED-IN and CHECKED-OUT</li>
+                    <li>Confirmation dialog prevents accidental deletion</li>
+                </ul>
+            </div>
+            
+            <!-- 6. One-Click Billing System (⚡ New Feature) -->
+            <div class="feature-box" style="border-left-color: #27ae60;">
+                <h4><i class="fas fa-bolt" style="color: #27ae60;"></i> 6. One-Click Billing System (⚡ New Feature)</h4>
+                
+                <!-- Image for Bill Button -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/bill-button.png" 
+                         alt="Bill Button" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place bill-button.png here
+                    </div>
+                    <div class="image-caption">Figure 5: Bill Button with ⚡ Icon</div>
+                </div>
+                
+                <!-- Image for Bill Confirmation -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/bill-confirmation.png" 
+                         alt="Bill Confirmation" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place bill-confirmation.png here
+                    </div>
+                    <div class="image-caption">Figure 6: Checkout Confirmation Dialog</div>
+                </div>
+                
+                <!-- Image for Generated Bill -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/generated-bill.png" 
+                         alt="Generated Bill" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place generated-bill.png here
+                    </div>
+                    <div class="image-caption">Figure 7: Generated Bill</div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>⚡ How it works:</strong> When a guest is ready to check out, simply click the Bill button!
+                </div>
+                
+                <h5 style="margin: 15px 0 10px;">Step-by-Step Process:</h5>
+                <ol style="margin-left: 20px;">
+                    <li>Navigate to "View Reservations"</li>
+                    <li>Find the CHECKED-IN reservation</li>
+                    <li>Click the <strong style="background: #27ae60; color: white; padding: 2px 8px; border-radius: 3px;">Bill⚡</strong> button</li>
+                    <li>Confirmation dialog appears: "Is guest checking out TODAY?"</li>
+                    <li>Click "Yes, Checkout Today"</li>
+                </ol>
+                
+                <h5 style="margin: 15px 0 10px;">What happens automatically:</h5>
+                <ul style="margin-left: 20px;">
+                    <li>✅ Actual checkout date is set to <strong>today's date</strong></li>
+                    <li>✅ Nights calculated correctly (minimum 1 night for same-day checkout)</li>
+                    <li>✅ Status updates to <span class="status-badge status-checkedout">CHECKED-OUT</span></li>
+                    <li>✅ Bill generated with correct amount</li>
+                    <li>✅ Bill displayed in professional format</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <strong>📌 Important:</strong> You do NOT need to manually edit the checkout date! The system handles everything automatically, including early checkout calculations.
+                </div>
+                
+                <h5 style="margin: 15px 0 10px;">Early Checkout Example:</h5>
+                <div class="code-block">
+                    Check-in: 2026-03-04<br>
+                    Planned Checkout: 2026-03-06<br>
+                    Today: 2026-03-04 (early checkout)<br>
+                    → Bill calculates: 1 night<br>
+                    → Amount: 1 × room price
+                </div>
+            </div>
+            
+            <!-- 7. Guest Management -->
+            <div class="feature-box">
+                <h4><i class="fas fa-users"></i> 7. Guest Management</h4>
+                
+                <!-- Image for Guest List -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/guest-list.png" 
+                         alt="Guest List" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place guest-list.png here
+                    </div>
+                    <div class="image-caption">Figure 8: Guest Management</div>
+                </div>
+                
+                <ul style="margin-left: 20px;">
+                    <li><strong>Add Guest:</strong> Enter name, address, and contact number</li>
+                    <li><strong>Validation:</strong> Contact numbers must be unique (no duplicates)</li>
+                    <li><strong>Search:</strong> By name or phone number (partial matches work)</li>
+                    <li><strong>Edit:</strong> Update guest details</li>
+                    <li><strong>Delete:</strong> Only possible if guest has no reservations</li>
+                    <li><strong>History:</strong> View all bookings for a guest</li>
+                </ul>
+            </div>
+            
+            <!-- 8. Room Type Management -->
+            <div class="feature-box">
+                <h4><i class="fas fa-bed"></i> 8. Room Type Management</h4>
+                
+                <!-- Image for Room Types -->
+                <div class="image-container">
+                    <img src="${pageContext.request.contextPath}/jsp/includes/images/room-types.png" 
+                         alt="Room Types" 
+                         class="feature-image"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style="display:none; padding:20px; background:#f8f9fa; border:1px dashed #ccc;">
+                        <i class="fas fa-image"></i> Place room-types.png here
+                    </div>
+                    <div class="image-caption">Figure 9: Room Type Management</div>
+                </div>
+                
+                <ul style="margin-left: 20px;">
+                    <li><strong>Add Room Type:</strong> Enter unique name and price per night</li>
+                    <li><strong>Validation Rules:</strong>
+                        <ul>
+                            <li>Name must be at least 5 characters</li>
+                            <li>Must contain at least 2 letters</li>
+                            <li>Can include letters, numbers, spaces, hyphens, apostrophes</li>
+                            <li>Price must be greater than 0</li>
+                        </ul>
+                    </li>
+                    <li><strong>Search:</strong> By name or price range</li>
+                    <li><strong>Price Range Search:</strong> 
+                        <ul>
+                            <li>Min only: shows rooms ≥ price</li>
+                            <li>Max only: shows rooms ≤ price</li>
+                            <li>Both: shows rooms between min and max</li>
+                        </ul>
+                    </li>
+                    <li><strong>Edit/Delete:</strong> Update prices or delete unused room types</li>
+                </ul>
+            </div>
+            
+            <!-- Search Tips -->
+            <div class="tip-box">
+                <h4><i class="fas fa-search"></i> Search Tips</h4>
                 <ul>
-                    <li><i class="fas fa-check"></i> Click on stat cards to filter reservations by status</li>
-                    <li><i class="fas fa-check"></i> Use the search box to quickly find reservations</li>
-                    <li><i class="fas fa-check"></i> Dashboard auto-refresh every 30 seconds</li>
+                    <li><strong>Reservation Numbers:</strong> Works with or without # symbol</li>
+                    <li><strong>Phone Numbers:</strong> Search partial numbers (e.g., "077" finds all starting with 077)</li>
+                    <li><strong>Guest Names:</strong> Case-insensitive partial matching</li>
+                    <li><strong>Price Range:</strong> Leave one field empty for min/max only searches</li>
                 </ul>
             </div>
             
             <!-- FAQ -->
             <div class="faq-section">
-                <h3 style="color: #1e3c72; margin-bottom: 15px;">❓ Frequently Asked Questions</h3>
-                
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        How do I add a new reservation?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Click "Add Reservation" in sidebar → Select guest → Choose room type → Pick dates → Click "Create Reservation". System auto-assigns status based on dates.
-                    </div>
-                </div>
+                <h3 style="color: #1e3c72; margin: 30px 0 15px;">❓ Frequently Asked Questions</h3>
                 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
@@ -803,19 +1044,83 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        Go to "View Reservations" → Find the guest → Click "Edit" → Set "Actual Checkout Date" → System recalculates amount and updates status to CHECKED-OUT.
+                        Simply click the <strong>Bill button (⚡)</strong>! The system automatically sets today's date as checkout, calculates the correct nights (minimum 1), and generates the bill. No manual editing needed!
                     </div>
                 </div>
                 
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        How do I generate a bill?
+                        Why can't I edit the guest name?
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        For CHECKED-IN or CHECKED-OUT reservations, click "Bill" button → System generates invoice → Click "Print" to save as PDF.
+                        Guest names are fixed to maintain data integrity and booking history. If you need to change a guest's name, you can edit it in the Guest Management section.
                     </div>
                 </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        How are nights calculated for same-day checkout?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        If a guest checks in and out on the same day, they are charged for <strong>1 night</strong>. The system automatically handles this when you click the Bill button.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Can I search by reservation number with the # symbol?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! You can search with or without the # symbol. For example, both "#RES20260304-E433" and "RES20260304-E433" will work.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        What's the difference between BOOKED and CHECKED-IN?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <strong>BOOKED:</strong> Future reservation (check-in date is in the future)<br>
+                        <strong>CHECKED-IN:</strong> Guest is currently staying (check-in date is today or past, but check-out is future)
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        How do I generate a bill for a past reservation?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Go to View Reservations, find the CHECKED-OUT reservation, and click the "Print" button to view/reprint the bill.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Can I delete a guest with existing reservations?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        No, guests with booking history cannot be deleted to maintain data integrity. You can only delete guests with no reservations.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pro Tips -->
+            <div class="quick-tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tips</h4>
+                <ul>
+                    <li><i class="fas fa-check"></i> <strong>⚡ Bill Button:</strong> One-click checkout - no need to manually edit dates!</li>
+                    <li><i class="fas fa-check"></i> <strong>🎯 Click Stats:</strong> Click on stat cards to instantly filter reservations</li>
+                    <li><i class="fas fa-check"></i> <strong>🔍 Search:</strong> Works with or without # for reservation numbers</li>
+                    <li><i class="fas fa-check"></i> <strong>📅 Same-Day:</strong> System automatically charges 1 night for same-day checkout</li>
+                    <li><i class="fas fa-check"></i> <strong>💰 Billing:</strong> Bills show room charges only - no taxes</li>
+                    <li><i class="fas fa-check"></i> <strong>🔄 Status Colors:</strong> Blue = BOOKED, Green = CHECKED-IN, Red = CHECKED-OUT</li>
+                </ul>
             </div>
         </div>
         
@@ -840,288 +1145,11 @@
             }
         }
         
-        // Help Cards Data
-        const helpData = {
-            dashboard: {
-                title: 'Dashboard Overview',
-                icon: 'fa-home',
-                steps: [
-                    'Login with your admin credentials',
-                    'View key statistics at a glance',
-                    'Monitor room occupancy in real-time',
-                    'Check today\'s revenue and check-ins',
-                    'Access quick actions for common tasks'
-                ],
-                tips: [
-                    'Click on stat cards to filter reservations',
-                    'Dashboard auto-refreshes every 30 seconds',
-                    'Use the search to find specific data'
-                ],
-                faq: [
-                    { q: 'What do the colors mean?', a: 'Green = CHECKED-IN, Blue = BOOKED, Red = CHECKED-OUT' },
-                    { q: 'How often does data update?', a: 'Real-time updates from database' }
-                ]
-            },
-            reservation: {
-                title: 'Add New Reservation',
-                icon: 'fa-calendar-plus',
-                steps: [
-                    'Click "Add Reservation" from sidebar',
-                    'Select guest from dropdown (or add new guest)',
-                    'Choose room type and price per night',
-                    'Select check-in and check-out dates',
-                    'System auto-calculates total amount',
-                    'Click "Create Reservation" to save'
-                ],
-                tips: [
-                    'Check-in date cannot be in the past',
-                    'Minimum 1 night stay required',
-                    'Status auto-assigns based on dates'
-                ],
-                faq: [
-                    { q: 'What if guest not in list?', a: 'Click "Add new guest" link below dropdown' },
-                    { q: 'How is status determined?', a: 'Future dates = BOOKED, Today = CHECKED-IN' }
-                ]
-            },
-            manage: {
-                title: 'Manage Reservations',
-                icon: 'fa-list',
-                steps: [
-                    'Go to "View Reservations" from sidebar',
-                    'Use search box to find by name/phone',
-                    'Filter by status using dropdown',
-                    'Click "Edit" to modify reservation',
-                    'Click "Delete" only for BOOKED status',
-                    'Click "Bill" to generate invoice'
-                ],
-                tips: [
-                    'Different buttons appear based on status',
-                    'Use status filter to see specific bookings',
-                    'Early checkout available for CHECKED-IN'
-                ],
-                faq: [
-                    { q: 'Why can\'t I delete some reservations?', a: 'Only BOOKED status can be deleted' },
-                    { q: 'How to handle early checkout?', a: 'Edit reservation and set actual checkout date' }
-                ]
-            },
-            billing: {
-                title: 'Billing System',
-                icon: 'fa-file-invoice-dollar',
-                steps: [
-                    'Click "Bill" button for any reservation',
-                    'System auto-calculates nights and amount',
-                    'View detailed bill with taxes',
-                    'Click "Print" to save or print',
-                    'Bill automatically saved in database'
-                ],
-                tips: [
-                    'Bills include 10% service charge',
-                    '12% tax automatically added',
-                    'Early checkout adjustments auto-calculated'
-                ],
-                faq: [
-                    { q: 'Can I print old bills?', a: 'Yes, click "Print Bill" for any checked-out reservation' },
-                    { q: 'What if guest checks out early?', a: 'System adjusts amount based on actual checkout' }
-                ]
-            },
-            guest: {
-                title: 'Guest Management',
-                icon: 'fa-users',
-                steps: [
-                    'Go to "Guest Management" from sidebar',
-                    'View all registered guests',
-                    'Search by name or phone number',
-                    'Add new guest with contact details',
-                    'Edit or delete guest information'
-                ],
-                tips: [
-                    'Phone numbers must be unique',
-                    'Can\'t delete guests with reservations',
-                    'View guest booking history'
-                ],
-                faq: [
-                    { q: 'Why can\'t I delete a guest?', a: 'Guest has existing reservations' },
-                    { q: 'How to add new guest quickly?', a: 'Use "Add Guest" button or from reservation form' }
-                ]
-            },
-            room: {
-                title: 'Room Type Management',
-                icon: 'fa-bed',
-                steps: [
-                    'Go to "Room Types" from sidebar',
-                    'View all room categories and prices',
-                    'Add new room type with name and price',
-                    'Edit existing room details',
-                    'Delete unused room types'
-                ],
-                tips: [
-                    'Room names must be unique',
-                    'Prices can be updated anytime',
-                    'Can\'t delete room types with reservations'
-                ],
-                faq: [
-                    { q: 'How to change room price?', a: 'Click "Edit" next to room type and update price' },
-                    { q: 'Can I have multiple same room types?', a: 'No, each room type is unique category' }
-                ]
-            }
-        };
-        
-        // Update detailed section based on selected card
-        document.querySelectorAll('.help-card').forEach(card => {
-            card.addEventListener('click', function() {
-                // Remove active class from all cards
-                document.querySelectorAll('.help-card').forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked card
-                this.classList.add('active');
-                
-                // Get topic
-                const topic = this.dataset.topic;
-                const data = helpData[topic];
-                
-                if (data) {
-                    // Update title
-                    document.getElementById('detailTitle').innerHTML = `<i class="fas ${data.icon}"></i> ${data.title}`;
-                    
-                    // Update steps
-                    let stepsHtml = '<h3 style="color: #1e3c72; margin: 20px 0 10px;">📋 Step-by-Step Guide</h3><ol style="padding-left: 20px; line-height: 1.8;">';
-                    data.steps.forEach(step => {
-                        stepsHtml += `<li>${step}</li>`;
-                    });
-                    stepsHtml += '</ol>';
-                    
-                    // Update tips
-                    let tipsHtml = '<div class="quick-tips"><h4><i class="fas fa-lightbulb"></i> Pro Tips</h4><ul>';
-                    data.tips.forEach(tip => {
-                        tipsHtml += `<li><i class="fas fa-check"></i> ${tip}</li>`;
-                    });
-                    tipsHtml += '</ul></div>';
-                    
-                    // Update FAQ
-                    let faqHtml = '<div class="faq-section"><h3 style="color: #1e3c72; margin-bottom: 15px;">❓ Frequently Asked Questions</h3>';
-                    data.faq.forEach(item => {
-                        faqHtml += `
-                            <div class="faq-item">
-                                <div class="faq-question" onclick="toggleFaq(this)">
-                                    ${item.q}
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                                <div class="faq-answer">${item.a}</div>
-                            </div>
-                        `;
-                    });
-                    faqHtml += '</div>';
-                    
-                    // Update instructions div
-                    document.getElementById('instructions').innerHTML = stepsHtml + tipsHtml;
-                    
-                    // Update FAQ section
-                    document.querySelector('.faq-section').innerHTML = faqHtml;
-                    
-                    // Update screenshot placeholder based on topic
-                    updateScreenshot(topic);
-                }
-            });
-        });
-        
-        // Update screenshot based on topic
-        function updateScreenshot(topic) {
-            const placeholder = document.getElementById('screenshotPlaceholder');
-            
-            let mockHtml = '<i class="fas fa-camera"></i><p>Screenshot of ' + topic + ' will be displayed here</p>';
-            
-            if (topic === 'dashboard') {
-                mockHtml = `
-                    <i class="fas fa-camera"></i>
-                    <p>Dashboard Screenshot</p>
-                    <div class="mock-screen">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                            <div><strong>Dashboard</strong></div>
-                            <div>📅 March 03, 2026</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                                <div style="color: #666;">Total Rooms</div>
-                                <div style="font-size: 24px; font-weight: bold;">8</div>
-                            </div>
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                                <div style="color: #666;">Active Bookings</div>
-                                <div style="font-size: 24px; font-weight: bold;">14</div>
-                            </div>
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                                <div style="color: #666;">Check-ins Today</div>
-                                <div style="font-size: 24px; font-weight: bold;">3</div>
-                            </div>
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                                <div style="color: #666;">Revenue</div>
-                                <div style="font-size: 24px; font-weight: bold;">LKR 25k</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else if (topic === 'reservation') {
-                mockHtml = `
-                    <i class="fas fa-camera"></i>
-                    <p>Add Reservation Form Screenshot</p>
-                    <div class="mock-screen">
-                        <div style="margin-bottom: 15px;"><strong>➕ Add New Reservation</strong></div>
-                        <div style="margin-bottom: 10px;">👤 Guest: John Doe [▼]</div>
-                        <div style="margin-bottom: 10px;">🛏️ Room: Deluxe Ocean View [▼]</div>
-                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                            <div>📅 Check-in: 2026-03-15</div>
-                            <div>📅 Check-out: 2026-03-18</div>
-                        </div>
-                        <div style="background: #e3f2fd; padding: 10px; border-radius: 5px;">
-                            Total: LKR 45,000 (3 nights)
-                        </div>
-                        <div style="background: #2a5298; color: white; padding: 10px; text-align: center; margin-top: 10px; border-radius: 5px;">
-                            Create Reservation
-                        </div>
-                    </div>
-                `;
-            } else if (topic === 'manage') {
-                mockHtml = `
-                    <i class="fas fa-camera"></i>
-                    <p>Reservation List Screenshot</p>
-                    <div class="mock-screen">
-                        <table class="mock-table">
-                            <tr><th>#</th><th>Guest</th><th>Room</th><th>Status</th><th>Actions</th></tr>
-                            <tr>
-                                <td>RES001</td>
-                                <td>John Doe</td>
-                                <td>Deluxe</td>
-                                <td><span class="status-mock status-BOOKED-mock">BOOKED</span></td>
-                                <td>
-                                    <span class="mock-button btn-edit-mock">Edit</span>
-                                    <span class="mock-button btn-delete-mock">Delete</span>
-                                    <span class="mock-button btn-bill-mock">Bill</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>RES002</td>
-                                <td>Jane Smith</td>
-                                <td>Suite</td>
-                                <td><span class="status-mock status-CHECKED-IN-mock">CHECKED-IN</span></td>
-                                <td>
-                                    <span class="mock-button btn-edit-mock">Edit</span>
-                                    <span class="mock-button btn-delete-mock btn-disabled">Delete</span>
-                                    <span class="mock-button btn-bill-mock">Bill</span>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                `;
-            }
-            
-            placeholder.innerHTML = mockHtml;
-        }
-        
         // Search functionality
         document.getElementById('helpSearch').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
             
             document.querySelectorAll('.help-card').forEach(card => {
-                const topic = card.dataset.topic;
                 const title = card.querySelector('h3').textContent.toLowerCase();
                 const steps = Array.from(card.querySelectorAll('.step-list li')).map(li => li.textContent.toLowerCase());
                 
@@ -1134,9 +1162,6 @@
                 }
             });
         });
-        
-        // Initialize with dashboard view
-        document.querySelector('[data-topic="dashboard"]').classList.add('active');
     </script>
 </body>
 </html>
