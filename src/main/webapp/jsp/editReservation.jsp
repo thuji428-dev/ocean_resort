@@ -272,6 +272,12 @@
             opacity: 0.7;
         }
         
+        .form-group input[readonly], .form-group select[readonly] {
+            background: #f5f5f5;
+            cursor: default;
+            border-color: #ddd;
+        }
+        
         .form-group input.error {
             border-color: #e74c3c;
             background-color: #fff5f5;
@@ -289,6 +295,15 @@
         
         .form-group .hint.success {
             color: #27ae60;
+        }
+        
+        .readonly-field {
+            background: #f5f5f5;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
         }
         
         .price-display {
@@ -362,29 +377,6 @@
             font-weight: bold;
             color: #2a5298;
             font-size: 18px;
-        }
-        
-        .validation-summary {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #e9ecef;
-        }
-        
-        .validation-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 5px 0;
-        }
-        
-        .validation-item i.fa-check-circle {
-            color: #27ae60;
-        }
-        
-        .validation-item i.fa-exclamation-circle {
-            color: #e74c3c;
         }
         
         /* Status Change Warning */
@@ -474,30 +466,32 @@
                         </span>
                     </span>
                 </div>
-                <div class="info-row">
-                    <span class="info-label">Check-in Date:</span>
-                    <span class="info-value"><%= reservation.getCheckInDate() %></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Check-out Date:</span>
-                    <span class="info-value"><%= reservation.getCheckOutDate() %></span>
-                </div>
             </div>
             
-            <!-- Status-specific messages and validations -->
+            <!-- Status-specific messages -->
             <% if (isBooked) { %>
                 <div class="success-box">
                     <i class="fas fa-check-circle"></i>
-                    <strong>BOOKED Status - Full Edit Mode</strong>
-                    <p style="margin-top: 5px; font-size: 14px;">You can modify all reservation details including guest, room type, and dates.</p>
+                    <strong>BOOKED Status</strong>
+                    <p style="margin-top: 5px; font-size: 14px;">
+                        ✓ Room Type can be changed<br>
+                        ✓ Check-in date can be changed<br>
+                        ✓ Check-out date can be changed<br>
+                        ✗ Guest cannot be changed
+                    </p>
                 </div>
             <% } %>
             
             <% if (isCheckedIn) { %>
                 <div class="warning-box">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <strong>CHECKED-IN Status - Limited Edit Mode</strong>
-                    <p style="margin-top: 5px; font-size: 14px;">Check-in date cannot be changed. You can modify room type and check-out date.</p>
+                    <strong>CHECKED-IN Status</strong>
+                    <p style="margin-top: 5px; font-size: 14px;">
+                        ✓ Check-out date can be changed<br>
+                        ✗ Guest cannot be changed<br>
+                        ✗ Room Type cannot be changed<br>
+                        ✗ Check-in date cannot be changed
+                    </p>
                 </div>
             <% } %>
             
@@ -516,37 +510,6 @@
                 <p style="margin-top: 5px; font-size: 14px;">Since check-in date is set to today, this reservation will be marked as CHECKED-IN.</p>
             </div>
             
-            <!-- Validation Summary for BOOKED status -->
-            <% if (isBooked) { %>
-            <div class="validation-summary">
-                <h4 style="margin-bottom: 10px; color: #1e3c72;">Edit Rules for BOOKED Status:</h4>
-                <div class="validation-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Guest can be changed</span>
-                </div>
-                <div class="validation-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Room type can be changed</span>
-                </div>
-                <div class="validation-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Check-in date can be changed (must be today or future)</span>
-                </div>
-                <div class="validation-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Check-out date must be after check-in date</span>
-                </div>
-                <div class="validation-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Minimum 1 night stay required</span>
-                </div>
-                <div class="validation-item" style="color: #f39c12;">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Setting check-in to today will auto-change status to CHECKED-IN</span>
-                </div>
-            </div>
-            <% } %>
-            
             <form action="${pageContext.request.contextPath}/reservation" method="post" id="editForm">
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="id" value="<%= reservation.getReservationId() %>">
@@ -554,75 +517,102 @@
                 <input type="hidden" name="originalCheckIn" id="originalCheckIn" value="<%= reservation.getCheckInDate() %>">
                 
                 <div class="form-row">
+                    <!-- Guest (Read-only for ALL statuses) -->
                     <div class="form-group">
-                        <label for="guestId">
+                        <label for="guestDisplay">
                             <i class="fas fa-user"></i> Guest
                         </label>
-                        <select id="guestId" name="guestId" <%= isCheckedOut ? "disabled" : "" %> required>
-                            <% for (Guest g : guests) { %>
-                                <option value="<%= g.getGuestId() %>" 
-                                    <%= g.getGuestId() == reservation.getGuestId() ? "selected" : "" %>>
-                                    <%= g.getGuestName() %> - <%= g.getContactNumber() %>
-                                </option>
-                            <% } %>
-                        </select>
-                        <% if (isCheckedOut) { %>
-                            <input type="hidden" name="guestId" value="<%= reservation.getGuestId() %>">
-                            <div class="hint">Cannot change guest for checked-out reservations</div>
-                        <% } %>
+                        <div class="readonly-field">
+                            <strong><%= reservation.getGuestName() %></strong> - <%= reservation.getContactNumber() %>
+                        </div>
+                        <input type="hidden" name="guestId" value="<%= reservation.getGuestId() %>">
+                        <div class="hint"><i class="fas fa-lock"></i> Guest cannot be changed</div>
                     </div>
                     
+                    <!-- Room Type -->
                     <div class="form-group">
                         <label for="roomTypeId">
                             <i class="fas fa-bed"></i> Room Type
                         </label>
-                        <select id="roomTypeId" name="roomTypeId" <%= isCheckedOut ? "disabled" : "" %> required onchange="calculateTotal()">
-                            <% for (RoomType rt : roomTypes) { 
-                                String selected = rt.getRoomTypeId() == reservation.getRoomTypeId() ? "selected" : "";
-                            %>
-                                <option value="<%= rt.getRoomTypeId() %>" 
-                                        data-price="<%= rt.getPricePerNight() %>"
-                                        <%= selected %>>
-                                    <%= rt.getTypeName() %> - LKR <%= String.format("%,.0f", rt.getPricePerNight()) %>/night
-                                </option>
-                            <% } %>
-                        </select>
-                        <% if (isCheckedOut) { %>
+                        <% if (isBooked) { %>
+                            <!-- BOOKED: Can change room type -->
+                            <select id="roomTypeId" name="roomTypeId" required onchange="calculateTotal()">
+                                <% for (RoomType rt : roomTypes) { 
+                                    String selected = rt.getRoomTypeId() == reservation.getRoomTypeId() ? "selected" : "";
+                                %>
+                                    <option value="<%= rt.getRoomTypeId() %>" 
+                                            data-price="<%= rt.getPricePerNight() %>"
+                                            <%= selected %>>
+                                        <%= rt.getTypeName() %> - LKR <%= String.format("%,.0f", rt.getPricePerNight()) %>/night
+                                    </option>
+                                <% } %>
+                            </select>
+                            <div class="hint"><i class="fas fa-info-circle"></i> Can be changed</div>
+                        <% } else { %>
+                            <!-- CHECKED-IN or CHECKED-OUT: Cannot change room type -->
+                            <div class="readonly-field">
+                                <strong><%= reservation.getRoomTypeName() %></strong> - LKR <%= String.format("%,.0f", reservation.getPricePerNight()) %>/night
+                            </div>
                             <input type="hidden" name="roomTypeId" value="<%= reservation.getRoomTypeId() %>">
+                            <div class="hint"><i class="fas fa-lock"></i> Room type cannot be changed</div>
                         <% } %>
                     </div>
                 </div>
                 
                 <div class="form-row">
+                    <!-- Check-in Date -->
                     <div class="form-group">
                         <label for="checkInDate">
                             <i class="fas fa-sign-in-alt"></i> Check-in Date
                         </label>
-                        <input type="date" id="checkInDate" name="checkInDate" 
-                               value="<%= reservation.getCheckInDate() %>" 
-                               min="<%= today %>"
-                               <%= (isCheckedIn || isCheckedOut) ? "disabled" : "" %>
-                               required onchange="checkStatusChange(); validateDates(); calculateTotal()">
-                        <div id="checkInHint" class="hint">
-                            <% if (isBooked) { %>
-                                <i class="fas fa-info-circle"></i> Can be changed to any future date
-                            <% } else if (isCheckedIn) { %>
-                                <i class="fas fa-lock"></i> Check-in date cannot be changed for checked-in guests
-                                <input type="hidden" name="checkInDate" value="<%= reservation.getCheckInDate() %>">
-                            <% } %>
-                        </div>
+                        <% if (isBooked) { %>
+                            <!-- BOOKED: Can edit check-in date -->
+                            <input type="date" id="checkInDate" name="checkInDate" 
+                                   value="<%= reservation.getCheckInDate() %>" 
+                                   min="<%= today %>"
+                                   required onchange="checkStatusChange(); validateDates(); calculateTotal()">
+                            <div id="checkInHint" class="hint">
+                                <i class="fas fa-info-circle"></i> Can be changed
+                            </div>
+                        <% } else if (isCheckedIn) { %>
+                            <!-- CHECKED-IN: Cannot edit check-in date -->
+                            <div class="readonly-field">
+                                <%= reservation.getCheckInDate() %>
+                            </div>
+                            <input type="hidden" name="checkInDate" value="<%= reservation.getCheckInDate() %>">
+                            <div class="hint"><i class="fas fa-lock"></i> Check-in date cannot be changed</div>
+                        <% } else { %>
+                            <!-- CHECKED-OUT: Disabled -->
+                            <div class="readonly-field">
+                                <%= reservation.getCheckInDate() %>
+                            </div>
+                            <input type="hidden" name="checkInDate" value="<%= reservation.getCheckInDate() %>">
+                            <div class="hint"><i class="fas fa-lock"></i> Cannot modify checked-out reservation</div>
+                        <% } %>
                     </div>
                     
+                    <!-- Check-out Date -->
                     <div class="form-group">
                         <label for="checkOutDate">
                             <i class="fas fa-sign-out-alt"></i> Check-out Date
                         </label>
-                        <input type="date" id="checkOutDate" name="checkOutDate" 
-                               value="<%= reservation.getCheckOutDate() %>" 
-                               min="<%= reservation.getCheckInDate().plusDays(1) %>"
-                               <%= isCheckedOut ? "disabled" : "" %>
-                               required onchange="validateDates(); calculateTotal()">
-                        <div id="checkOutHint" class="hint"></div>
+                        <% if (!isCheckedOut) { %>
+                            <!-- BOOKED or CHECKED-IN: Can edit check-out date -->
+                            <input type="date" id="checkOutDate" name="checkOutDate" 
+                                   value="<%= reservation.getCheckOutDate() %>" 
+                                   min="<%= reservation.getCheckInDate().plusDays(1) %>"
+                                   required onchange="validateDates(); calculateTotal()">
+                            <div id="checkOutHint" class="hint">
+                                <i class="fas fa-info-circle"></i> Can be modified
+                            </div>
+                        <% } else { %>
+                            <!-- CHECKED-OUT: Disabled -->
+                            <div class="readonly-field">
+                                <%= reservation.getCheckOutDate() %>
+                            </div>
+                            <input type="hidden" name="checkOutDate" value="<%= reservation.getCheckOutDate() %>">
+                            <div class="hint"><i class="fas fa-lock"></i> Cannot modify checked-out reservation</div>
+                        <% } %>
                     </div>
                 </div>
                 
@@ -662,42 +652,40 @@
         ];
         
         const originalCheckIn = '<%= reservation.getCheckInDate() %>';
-        const originalCheckOut = '<%= reservation.getCheckOutDate() %>';
+        const originalRoomTypeId = <%= reservation.getRoomTypeId() %>;
+        const originalRoomPrice = <%= reservation.getPricePerNight() %>;
         const status = '<%= reservation.getStatus() %>';
         const isBooked = <%= isBooked %>;
         const isCheckedIn = <%= isCheckedIn %>;
         const isCheckedOut = <%= isCheckedOut %>;
         const today = '<%= today %>';
         
-        // Check if status should change to CHECKED-IN
+        // Get current room price (for BOOKED, might change)
+        function getCurrentRoomPrice() {
+            if (isBooked) {
+                const roomTypeId = document.getElementById('roomTypeId').value;
+                const roomType = roomTypes.find(rt => rt.id == roomTypeId);
+                return roomType ? roomType.price : originalRoomPrice;
+            }
+            return originalRoomPrice;
+        }
+        
+        // Check if status should change to CHECKED-IN (only for BOOKED)
         function checkStatusChange() {
-            if (!isBooked) return; // Only for BOOKED reservations
+            if (!isBooked) return;
             
             const checkIn = document.getElementById('checkInDate').value;
             const warningDiv = document.getElementById('statusChangeWarning');
             const statusField = document.getElementById('statusField');
             
             if (checkIn === today) {
-                // Show warning and update status
                 warningDiv.classList.add('active');
                 statusField.value = 'CHECKED-IN';
-                
-                // Update checkout min date
-                const checkOut = document.getElementById('checkOutDate');
-                const nextDay = getNextDay(checkIn);
-                checkOut.min = nextDay;
-                
-                // Update hint
                 document.getElementById('checkInHint').innerHTML = '<i class="fas fa-exclamation-triangle" style="color: #f39c12;"></i> Check-in is today - status will become CHECKED-IN';
-                document.getElementById('checkInHint').className = 'hint';
             } else {
-                // Hide warning and keep original status
                 warningDiv.classList.remove('active');
                 statusField.value = 'BOOKED';
-                
-                // Update hint
-                document.getElementById('checkInHint').innerHTML = '<i class="fas fa-info-circle"></i> Can be changed to any future date';
-                document.getElementById('checkInHint').className = 'hint';
+                document.getElementById('checkInHint').innerHTML = '<i class="fas fa-info-circle"></i> Can be changed';
             }
         }
         
@@ -707,7 +695,6 @@
             return d.toISOString().split('T')[0];
         }
         
-        // Calculate nights between two dates
         function calculateNights(checkIn, checkOut) {
             if (!checkIn || !checkOut) return 0;
             const start = new Date(checkIn);
@@ -717,83 +704,56 @@
             return diffDays;
         }
         
-        // Validate dates based on status
         function validateDates() {
-            const checkIn = document.getElementById('checkInDate').value;
+            const checkIn = isBooked ? document.getElementById('checkInDate').value : originalCheckIn;
             const checkOut = document.getElementById('checkOutDate').value;
             const checkOutHint = document.getElementById('checkOutHint');
             const validationDiv = document.getElementById('validationMessages');
             const submitBtn = document.getElementById('submitBtn');
             
-            let isValid = true;
-            let messages = [];
-            
-            // Clear previous messages
             validationDiv.innerHTML = '';
             
-            if (!checkIn || !checkOut) {
+            if (!checkOut) {
                 submitBtn.disabled = true;
                 return;
             }
             
             const nights = calculateNights(checkIn, checkOut);
             
-            // VALIDATION 1: Check-out must be after check-in
             if (nights < 1) {
                 checkOutHint.innerHTML = '<i class="fas fa-exclamation-circle"></i> Check-out must be at least 1 day after check-in';
                 checkOutHint.className = 'hint error';
-                isValid = false;
-                messages.push('❌ Check-out must be after check-in date');
+                submitBtn.disabled = true;
+                
+                let html = '<div class="error-box" style="margin-top: 10px;">';
+                html += '<div>❌ Check-out must be after check-in date</div>';
+                html += '</div>';
+                validationDiv.innerHTML = html;
             } else {
                 checkOutHint.innerHTML = '<i class="fas fa-check-circle"></i> ' + nights + ' night' + (nights > 1 ? 's' : '');
                 checkOutHint.className = 'hint success';
+                submitBtn.disabled = false;
             }
             
-            // VALIDATION 2: For BOOKED status, check-in cannot be in the past
+            // For BOOKED, also validate check-in not in past
             if (isBooked && checkIn < today) {
-                document.getElementById('checkInHint').innerHTML = '<i class="fas fa-exclamation-circle"></i> Check-in date cannot be in the past';
+                document.getElementById('checkInHint').innerHTML = '<i class="fas fa-exclamation-circle"></i> Check-in cannot be in the past';
                 document.getElementById('checkInHint').className = 'hint error';
-                isValid = false;
-                messages.push('❌ Check-in date cannot be in the past');
+                submitBtn.disabled = true;
             }
-            
-            // VALIDATION 3: For CHECKED-IN, check-in cannot be changed
-            if (isCheckedIn && checkIn !== originalCheckIn) {
-                document.getElementById('checkInHint').innerHTML = '<i class="fas fa-exclamation-circle"></i> Check-in date cannot be changed for checked-in guests';
-                document.getElementById('checkInHint').className = 'hint error';
-                isValid = false;
-                messages.push('❌ Check-in date cannot be changed for checked-in guests');
-            }
-            
-            // Display validation messages
-            if (messages.length > 0) {
-                let html = '<div class="error-box" style="margin-top: 10px;">';
-                messages.forEach(msg => {
-                    html += '<div style="padding: 3px 0;">' + msg + '</div>';
-                });
-                html += '</div>';
-                validationDiv.innerHTML = html;
-            }
-            
-            submitBtn.disabled = !isValid;
-            return isValid;
         }
         
-        // Calculate total amount
         function calculateTotal() {
-            const roomTypeId = document.getElementById('roomTypeId').value;
-            const checkIn = document.getElementById('checkInDate').value;
+            const checkIn = isBooked ? document.getElementById('checkInDate').value : originalCheckIn;
             const checkOut = document.getElementById('checkOutDate').value;
+            const roomPrice = getCurrentRoomPrice();
             
-            if (!roomTypeId || !checkIn || !checkOut) return;
-            
-            const roomType = roomTypes.find(rt => rt.id == roomTypeId);
-            if (!roomType) return;
+            if (!checkOut) return;
             
             const nights = calculateNights(checkIn, checkOut);
             
             if (nights > 0) {
-                const total = roomType.price * nights;
+                const total = roomPrice * nights;
                 document.getElementById('totalAmount').textContent = 'LKR ' + total.toLocaleString();
                 document.getElementById('nightsLabel').textContent = nights + ' night' + (nights > 1 ? 's' : '');
             }
@@ -807,15 +767,19 @@
                 return;
             }
             
-            if (!validateDates()) {
+            const checkOut = document.getElementById('checkOutDate').value;
+            const checkIn = isBooked ? document.getElementById('checkInDate').value : originalCheckIn;
+            const nights = calculateNights(checkIn, checkOut);
+            
+            if (nights < 1) {
                 e.preventDefault();
-                return;
+                alert('Check-out date must be after check-in date');
             }
             
-            // For BOOKED status changing to CHECKED-IN, confirm
+            // Confirm status change for BOOKED to CHECKED-IN
             if (isBooked) {
-                const checkIn = document.getElementById('checkInDate').value;
-                if (checkIn === today) {
+                const newCheckIn = document.getElementById('checkInDate').value;
+                if (newCheckIn === today) {
                     if (!confirm('This reservation will be marked as CHECKED-IN. Continue?')) {
                         e.preventDefault();
                     }
@@ -823,7 +787,7 @@
             }
         });
         
-        // Initialize calculations and validation
+        // Initialize
         window.onload = function() {
             calculateTotal();
             validateDates();
@@ -832,26 +796,24 @@
             }
         };
         
-        // Real-time validation on changes
-        document.getElementById('checkInDate').addEventListener('change', function() {
-            validateDates();
-            calculateTotal();
-            checkStatusChange();
+        // Event listeners
+        if (isBooked) {
+            document.getElementById('checkInDate').addEventListener('change', function() {
+                validateDates();
+                calculateTotal();
+                checkStatusChange();
+                
+                const checkOut = document.getElementById('checkOutDate');
+                checkOut.min = getNextDay(this.value);
+            });
             
-            // Update check-out min date
-            const checkIn = this.value;
-            const checkOut = document.getElementById('checkOutDate');
-            if (checkIn) {
-                checkOut.min = getNextDay(checkIn);
-            }
-        });
+            document.getElementById('roomTypeId').addEventListener('change', calculateTotal);
+        }
         
         document.getElementById('checkOutDate').addEventListener('change', function() {
             validateDates();
             calculateTotal();
         });
-        
-        document.getElementById('roomTypeId').addEventListener('change', calculateTotal);
     </script>
 </body>
 </html>

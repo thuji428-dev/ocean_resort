@@ -171,10 +171,12 @@ public class Reservation {
     
     /**
      * Calculate planned total nights based on check-in and check-out dates
+     * If same day, count as 1 night (though this shouldn't happen in booking)
      */
     public int getTotalNights() {
         if (checkInDate != null && checkOutDate != null) {
-            return (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+            long days = ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+            return days == 0 ? 1 : (int) days;
         }
         return 0;
     }
@@ -182,11 +184,12 @@ public class Reservation {
     /**
      * Calculate actual nights stayed based on actual checkout date
      * If actual checkout is same as check-in, count as 1 night
+     * Example: check-in Mar 3, checkout Mar 3 = 1 night
      */
     public int getActualNights() {
         if (actualCheckoutDate != null) {
             long days = ChronoUnit.DAYS.between(checkInDate, actualCheckoutDate);
-            // If same day checkout, charge for 1 night
+            // If same day checkout (days = 0), charge for 1 night
             return days == 0 ? 1 : (int) days;
         }
         return getTotalNights();

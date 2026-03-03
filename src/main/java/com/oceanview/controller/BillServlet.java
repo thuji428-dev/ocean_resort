@@ -10,7 +10,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
+import java.time.LocalDate;
 
 @WebServlet("/bill")
 public class BillServlet extends HttpServlet {
@@ -29,12 +31,9 @@ public class BillServlet extends HttpServlet {
             throws ServletException, IOException {
         
         System.out.println("📥📥📥 BillServlet doGet CALLED 📥📥📥");
-        System.out.println("Request URL: " + request.getRequestURL());
-        System.out.println("Query String: " + request.getQueryString());
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("adminId") == null) {
-            System.out.println("❌ No session - redirecting to login");
             response.sendRedirect(request.getContextPath() + "/jsp/login.jsp");
             return;
         }
@@ -42,13 +41,9 @@ public class BillServlet extends HttpServlet {
         String action = request.getParameter("action");
         String idParam = request.getParameter("id");
         
-        System.out.println("Action parameter: '" + action + "'");
-        System.out.println("ID parameter: '" + idParam + "'");
-        
         if ("print".equals(action)) {
             printBill(request, response);
         } else {
-            System.out.println("❌ Unknown action: " + action);
             response.sendRedirect(request.getContextPath() + "/reservation");
         }
     }
@@ -60,41 +55,81 @@ public class BillServlet extends HttpServlet {
         
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.isEmpty()) {
-            System.out.println("❌ No ID provided");
             response.sendRedirect(request.getContextPath() + "/reservation?error=invalid_id");
             return;
         }
         
         try {
             int reservationId = Integer.parseInt(idParam);
-            System.out.println("Reservation ID: " + reservationId);
             
             // Get reservation details
             Reservation reservation = reservationDAO.getReservationById(reservationId);
             
             if (reservation == null) {
-                System.out.println("❌ Reservation not found for ID: " + reservationId);
                 response.sendRedirect(request.getContextPath() + "/reservation?error=not_found");
                 return;
             }
             
-            System.out.println("Reservation found: " + reservation.getReservationNumber());
-            System.out.println("Current status: " + reservation.getStatus());
-            System.out.println("Actual checkout date: " + reservation.getActualCheckoutDate());
+            System.out.println("========== BILL CALCULATION DEBUG ==========");
+            System.out.println("Reservation ID: " + reservationId);
+            System.out.println("Reservation #: " + reservation.getReservationNumber());
+            System.out.println("Current Status: " + reservation.getStatus());
+            System.out.println("Check-in Date: " + reservation.getCheckInDate());
+            System.out.println("Planned Check-out: " + reservation.getCheckOutDate());
+            System.out.println("Actual Check-out (before): " + reservation.getActualCheckoutDate());
+            System.out.println("==========================================");
             
-            // Check if bill exists
+            // Check if bill already exists
             Bill bill = billDAO.getBillByReservationId(reservationId);
-            System.out.println("Bill exists: " + (bill != null));
             
             if (bill == null) {
-                // Generate bill if it doesn't exist
-                System.out.println("💰 Generating new bill...");
-                int nights = reservation.getActualNights();
-                double amount = reservation.getActualAmount();
+                // STEP 1: If this is a CHECKED-IN reservation, set actual checkout to TODAY
+                LocalDate today = LocalDate.now();
                 
-                System.out.println("Nights: " + nights);
-                System.out.println("Amount: LKR " + amount);
+                if ("CHECKED-IN".equals(reservation.getStatus())) {
+                    System.out.println("🔄 CHECKED-IN reservation detected - auto-updating checkout to today");
+                    
+                    // Create an updated reservation object
+                    Reservation updatedRes = new Reservation();
+                    updatedRes.setReservationId(reservation.getReservationId());
+                    updatedRes.setReservationNumber(reservation.getReservationNumber());
+                    updatedRes.setGuestId(reservation.getGuestId());
+                    updatedRes.setRoomTypeId(reservation.getRoomTypeId());
+                    updatedRes.setCheckInDate(reservation.getCheckInDate());
+                    updatedRes.setCheckOutDate(reservation.getCheckOutDate());
+                    updatedRes.setActualCheckoutDate(today);  // Set actual checkout to TODAY
+                    updatedRes.setStatus("CHECKED-OUT");
+                    
+                    // Update in database
+                    boolean updated = reservationDAO.updateReservation(updatedRes);
+                    System.out.println("Reservation update: " + (updated ? "SUCCESS" : "FAILED"));
+                    
+                    if (updated) {
+                        // Refresh reservation data
+                        reservation = reservationDAO.getReservationById(reservationId);
+                    }
+                }
                 
+                // STEP 2: Calculate nights based on ACTUAL checkout date
+                int nights = 0;
+                double amount = 0;
+                
+                if (reservation.getActualCheckoutDate() != null) {
+                    // Use actual checkout date for calculation
+                    nights = reservation.getActualNights();
+                    amount = reservation.getActualAmount();
+                    System.out.println("✅ Using ACTUAL checkout date: " + reservation.getActualCheckoutDate());
+                } else {
+                    // Fallback to planned dates (should not happen for CHECKED-OUT)
+                    nights = reservation.getTotalNights();
+                    amount = reservation.getTotalAmount();
+                    System.out.println("⚠️ Using PLANNED checkout date (fallback)");
+                }
+                
+                System.out.println("Calculated Nights: " + nights);
+                System.out.println("Calculated Amount: LKR " + amount);
+                
+                // STEP 3: Generate bill
                 boolean generated = billDAO.generateBill(reservationId, nights, amount);
                 System.out.println("Bill generated: " + generated);
                 
@@ -103,18 +138,11 @@ public class BillServlet extends HttpServlet {
                     bill = billDAO.getBillByReservationId(reservationId);
                     System.out.println("Bill ID: " + bill.getBillId());
                     
-                    // ALWAYS update reservation status to CHECKED-OUT
-                    System.out.println("🔄 Updating reservation status to CHECKED-OUT...");
-                    boolean statusUpdated = reservationDAO.updateStatus(reservationId, "CHECKED-OUT");
-                    System.out.println("Status updated: " + statusUpdated);
-                    
-                    // Verify the update by fetching again
-                    Reservation updatedReservation = reservationDAO.getReservationById(reservationId);
-                    System.out.println("New status: " + updatedReservation.getStatus());
-                    System.out.println("New actual checkout: " + updatedReservation.getActualCheckoutDate());
-                    
-                    // Use updated reservation for display
-                    reservation = updatedReservation;
+                    // Ensure status is CHECKED-OUT
+                    if (!"CHECKED-OUT".equals(reservation.getStatus())) {
+                        reservationDAO.updateStatus(reservationId, "CHECKED-OUT");
+                        reservation = reservationDAO.getReservationById(reservationId);
+                    }
                     
                 } else {
                     System.out.println("❌ Failed to generate bill");
@@ -123,33 +151,24 @@ public class BillServlet extends HttpServlet {
                 }
             } else {
                 System.out.println("📋 Bill already exists with ID: " + bill.getBillId());
-                
-                // Even if bill exists, ensure status is CHECKED-OUT
-                if (!"CHECKED-OUT".equals(reservation.getStatus())) {
-                    System.out.println("🔄 Bill exists but status not CHECKED-OUT - updating...");
-                    boolean statusUpdated = reservationDAO.updateStatus(reservationId, "CHECKED-OUT");
-                    System.out.println("Status updated: " + statusUpdated);
-                    
-                    // Refresh reservation data
-                    reservation = reservationDAO.getReservationById(reservationId);
-                }
+                System.out.println("Bill nights: " + bill.getTotalNights());
+                System.out.println("Bill amount: " + bill.getTotalAmount());
             }
             
-            // Final check before forwarding
-            System.out.println("Final reservation status: " + reservation.getStatus());
-            System.out.println("Final actual checkout: " + reservation.getActualCheckoutDate());
-            System.out.println("Forwarding to printBill.jsp");
+            System.out.println("========== FINAL STATE ==========");
+            System.out.println("Final Status: " + reservation.getStatus());
+            System.out.println("Final Actual Checkout: " + reservation.getActualCheckoutDate());
+            System.out.println("Final Nights in Bill: " + (bill != null ? bill.getTotalNights() : "N/A"));
+            System.out.println("==================================");
             
             request.setAttribute("reservation", reservation);
             request.setAttribute("bill", bill);
             request.getRequestDispatcher("/jsp/printBill.jsp").forward(request, response);
             
         } catch (NumberFormatException e) {
-            System.out.println("❌ Invalid ID format: " + idParam);
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/reservation?error=invalid_id");
         } catch (Exception e) {
-            System.out.println("❌ Exception in printBill: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/reservation?error=bill_error");
         }

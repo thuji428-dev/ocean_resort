@@ -388,6 +388,7 @@
         .btn-bill {
             background: #27ae60;
             color: white;
+            position: relative;
         }
         
         .btn-view {
@@ -474,6 +475,18 @@
             font-size: 13px;
             color: #7f8c8d;
             margin-top: 5px;
+        }
+        
+        /* Lightning icon for bill button */
+        .btn-bill::after {
+            content: "⚡";
+            font-size: 12px;
+            margin-left: 3px;
+        }
+        
+        /* Tooltip for bill button */
+        .btn-bill[title] {
+            position: relative;
         }
         
         @media (max-width: 768px) {
@@ -612,18 +625,15 @@
                                 <td><%= r.getCheckOutDate() %></td>
                                 <td class="actual-checkout"><%= r.getActualCheckoutDate() != null ? r.getActualCheckoutDate() : "-" %></td>
                                 
-                                <!-- NIGHTS COLUMN - FIXED FOR CHECKED-OUT -->
+                                <!-- NIGHTS COLUMN -->
                                 <td class="nights">
                                     <% 
                                         int displayNights = 0;
                                         
                                         if ("CHECKED-OUT".equals(status) && r.isHasBill()) {
-                                            // Use bill data for checked-out reservations
                                             displayNights = r.getBillNights();
                                         } else {
-                                            // Use calculated data for other statuses
                                             displayNights = r.getActualNights();
-                                            // Ensure at least 1 night for checked-out without bill
                                             if ("CHECKED-OUT".equals(status) && displayNights == 0) {
                                                 displayNights = 1;
                                             }
@@ -632,18 +642,15 @@
                                     %>
                                 </td>
                                 
-                                <!-- TOTAL COLUMN - FIXED FOR CHECKED-OUT -->
+                                <!-- TOTAL COLUMN -->
                                 <td class="amount">
                                     <% 
                                         double displayAmount = 0;
                                         
                                         if ("CHECKED-OUT".equals(status) && r.isHasBill()) {
-                                            // Use bill data for checked-out reservations
                                             displayAmount = r.getBillAmount();
                                         } else {
-                                            // Use calculated data for other statuses
                                             displayAmount = r.getActualAmount();
-                                            // Ensure at least 1 night amount for checked-out without bill
                                             if ("CHECKED-OUT".equals(status) && displayAmount == 0) {
                                                 displayAmount = r.getPricePerNight();
                                             }
@@ -690,7 +697,7 @@
                                         </span>
                                     <% } %>
                                     
-                                    <!-- BILL BUTTON -->
+                                    <!-- BILL BUTTON with Checkout Confirmation -->
                                     <% if (r.isHasBill()) { %>
                                         <a href="${pageContext.request.contextPath}/bill?action=print&id=<%= r.getReservationId() %>" 
                                            class="action-btn btn-view" title="Print Bill">
@@ -700,7 +707,8 @@
                                         <a href="#" 
                                            class="action-btn btn-bill bill-link" 
                                            data-id="<%= r.getReservationId() %>"
-                                           title="Generate Bill">
+                                           data-guest="<%= r.getGuestName() %>"
+                                           title="⚡ Click to checkout guest - Auto-sets today as checkout date">
                                             <i class="fas fa-file-invoice"></i> Bill
                                         </a>
                                     <% } else { %>
@@ -725,6 +733,20 @@
         </div>
     </div>
 
+    <!-- Custom Confirmation Dialog (hidden by default) -->
+    <div id="checkoutConfirmDialog" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+            <i class="fas fa-question-circle" style="font-size: 60px; color: #f39c12; margin-bottom: 20px;"></i>
+            <h3 style="color: #1e3c72; margin-bottom: 15px;">Confirm Checkout</h3>
+            <p style="color: #34495e; margin-bottom: 10px;">Is guest <strong id="confirmGuestName"></strong> checking out <strong>TODAY</strong>?</p>
+            <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 20px;">Bill will be generated with today's date as checkout.</p>
+            <div style="display: flex; gap: 10px;">
+                <button id="confirmYesBtn" style="flex: 1; background: #27ae60; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">✅ Yes, Checkout Today</button>
+                <button id="confirmNoBtn" style="flex: 1; background: #95a5a6; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer;">❌ No, Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Filter by status
         function filterByStatus(status) {
@@ -732,15 +754,53 @@
             document.getElementById('searchForm').submit();
         }
 
-        // Bill button handling
+        // Variables for confirmation dialog
+        let pendingReservationId = null;
+        
+        // Show confirmation dialog
+        function showCheckoutConfirm(reservationId, guestName) {
+            pendingReservationId = reservationId;
+            document.getElementById('confirmGuestName').textContent = guestName;
+            document.getElementById('checkoutConfirmDialog').style.display = 'flex';
+        }
+        
+        // Hide confirmation dialog
+        function hideCheckoutConfirm() {
+            document.getElementById('checkoutConfirmDialog').style.display = 'none';
+            pendingReservationId = null;
+        }
+
+        // Bill button handling with confirmation
         document.querySelectorAll('.bill-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const reservationId = this.dataset.id;
-                if (confirm('Generate bill for this reservation?')) {
-                    window.location.href = '${pageContext.request.contextPath}/bill?action=print&id=' + reservationId;
-                }
+                const guestName = this.dataset.guest;
+                
+                // Show custom confirmation dialog
+                showCheckoutConfirm(reservationId, guestName);
             });
+        });
+
+        // Handle Yes button click
+        document.getElementById('confirmYesBtn').addEventListener('click', function() {
+            if (pendingReservationId) {
+                // Proceed to bill generation
+                window.location.href = '${pageContext.request.contextPath}/bill?action=print&id=' + pendingReservationId;
+            }
+            hideCheckoutConfirm();
+        });
+
+        // Handle No button click
+        document.getElementById('confirmNoBtn').addEventListener('click', function() {
+            hideCheckoutConfirm();
+        });
+
+        // Close dialog if clicking outside
+        document.getElementById('checkoutConfirmDialog').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideCheckoutConfirm();
+            }
         });
 
         // Auto-hide messages after 5 seconds
